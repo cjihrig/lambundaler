@@ -23,13 +23,14 @@
   "dependencies": {
     "browserify": "13.0.1",
     "insync": "2.1.1",
-    "joi": "8.4.0",
-    "jszip": "3.0.0",
-    "lodash.merge": "4.4.0"
+    "joi": "8.4.1",
+    "lodash.merge": "4.4.0",
+    "zipit": "1.0.0"
   },
   "devDependencies": {
     "belly-button": "2.x.x",
     "code": "3.x.x",
+    "jszip": "3.0.x",
     "lab": "10.x.x"
   },
   "keywords": [
