@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "browserify": "13.0.1",
+    "fs-extra": "0.30.0",
     "insync": "2.1.1",
     "joi": "8.4.1",
     "lodash.merge": "4.4.0",
@@ -31,7 +32,8 @@
     "belly-button": "2.x.x",
     "code": "3.x.x",
     "jszip": "3.0.x",
-    "lab": "10.x.x"
+    "lab": "10.x.x",
+    "stand-in": "4.x.x"
   },
   "keywords": [
     "AWS",
