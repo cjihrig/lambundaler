@@ -1,6 +1,6 @@
 {
   "name": "lambundaler",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Bundler for AWS Lambda functions",
   "author": "Continuation Labs <contact@continuation.io> (http://continuation.io/)",
   "main": "lib/index.js",
