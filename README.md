@@ -21,13 +21,14 @@ Lambundaler({
   entry: 'path-to-your-main-file.js',
   export: 'lambda-entry-point-export',
   output: 'path-to-write-zip-file.zip'
-}, (err, buffer) => {
+}, (err, buffer, artifacts) => {
   if (err) {
     console.error(err);
     return;
   }
 
-  // Handle buffer, which is an instance of Buffer
+  // Handle buffer, which is an instance of Buffer and
+  // artifacts, which is an object
 });
 ```
 
@@ -40,10 +41,15 @@ The function exported by `lambundaler` behaves as follows:
       - `entry` (string) - File path containing the Lambda function code.
       - `export` (string) - The export in `entry` implementing the Lambda function.
       - `bundler` (object) - Optional configuration object passed directly to Browserify.
+      - `minify` (boolean) - If `true`, the bundle will be minified. Defaults to `false`.
+      - `sourcemap` (string or boolean) - If minification is enabled, setting this to `false` prevents a source map from being generated. Setting this to a string allows you to name the source map. Defaults to `false`.
+      - `sourcemapOutput` (string) - An optional path to write the source map to.
       - `files` (array) - An optional array of strings and/or objects indicating additional files (such as standalone executables) to include in the zip archive. Strings specify file and directory paths. Objects should have `name` and `data` properties which are used as the file name and contents in the zip archive.
       - `output` (string) - Optional path to write the zip archive to.
     - `callback` (function) - A function which is called upon completion. This function takes the following arguments.
       - `err` (error) - Represents any error that occurs.
       - `buffer` (`Buffer`) - Contains the zip archive, represented as a Node.js `Buffer`.
+      - `artifacts` (object) - An object containing items generated during the build process. This object can contain the following properties.
+        - `sourcemap` (string) - A source map generated during minification.
   - Returns
     - Nothing

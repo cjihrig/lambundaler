@@ -26,6 +26,7 @@
     "insync": "2.1.1",
     "joi": "8.4.1",
     "lodash.merge": "4.4.0",
+    "minifyify": "7.3.3",
     "zipit": "1.0.0"
   },
   "devDependencies": {

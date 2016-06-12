@@ -53,9 +53,10 @@ describe('Lambundaler', () => {
     L({
       entry: Path.join(fixturesDirectory, 'single-file.js'),
       export: 'handler'
-    }, (err, buffer) => {
+    }, (err, buffer, artifacts) => {
       expect(err).to.not.exist();
       expect(buffer).to.be.an.instanceOf(Buffer);
+      expect(artifacts).to.equal({});
       unzip(buffer, (err, zip, buffer) => {
         expect(err).to.not.exist();
 
@@ -63,6 +64,51 @@ describe('Lambundaler', () => {
 
         expect(Object.keys(zip.files).length).to.equal(1);
         expect(file._asBuffer.toString()).to.match(/\/\/ Single file handler/);
+        done();
+      });
+    });
+  });
+
+  it('minifies the bundle', (done) => {
+    L({
+      entry: Path.join(fixturesDirectory, 'single-file.js'),
+      export: 'handler',
+      minify: true
+    }, (err, buffer, artifacts) => {
+      expect(err).to.not.exist();
+      expect(buffer).to.be.an.instanceOf(Buffer);
+      expect(artifacts).to.equal({});
+      unzip(buffer, (err, zip, buffer) => {
+        expect(err).to.not.exist();
+
+        const file = zip.files['single-file.js'];
+
+        expect(Object.keys(zip.files).length).to.equal(1);
+        expect(file._asBuffer.toString()).to.not.match(/\/\/ Single file handler/);
+        done();
+      });
+    });
+  });
+
+  it('generates a source map for a minified bundle', (done) => {
+    L({
+      entry: Path.join(fixturesDirectory, 'single-file.js'),
+      export: 'handler',
+      minify: true,
+      sourcemap: 'foo.js.map'
+    }, (err, buffer, artifacts) => {
+      expect(err).to.not.exist();
+      expect(buffer).to.be.an.instanceOf(Buffer);
+      expect(artifacts).to.be.an.object();
+      expect(artifacts.sourcemap).to.be.a.string();
+      expect(artifacts.sourcemap).to.match(/\/\/ Single file handler/);
+      unzip(buffer, (err, zip, buffer) => {
+        expect(err).to.not.exist();
+
+        const file = zip.files['single-file.js'];
+
+        expect(Object.keys(zip.files).length).to.equal(1);
+        expect(file._asBuffer.toString()).to.not.match(/\/\/ Single file handler/);
         done();
       });
     });
@@ -76,9 +122,10 @@ describe('Lambundaler', () => {
       entry: Path.join(fixturesDirectory, 'single-file.js'),
       export: 'handler',
       files: [file1, file2]
-    }, (err, buffer) => {
+    }, (err, buffer, artifacts) => {
       expect(err).to.not.exist();
       expect(buffer).to.be.an.instanceOf(Buffer);
+      expect(artifacts).to.equal({});
       unzip(buffer, (err, zip, buffer) => {
         expect(err).to.not.exist();
         expect(Object.keys(zip.files).length).to.equal(3);
@@ -104,10 +151,11 @@ describe('Lambundaler', () => {
       entry: Path.join(fixturesDirectory, 'single-file.js'),
       export: 'handler',
       output: outputPath
-    }, (err, buffer) => {
+    }, (err, buffer, artifacts) => {
       expect(err).to.not.exist();
       expect(buffer).to.be.an.instanceOf(Buffer);
       expect(buffer).to.equal(outputBuffer);
+      expect(artifacts).to.equal({});
       done();
     });
   });
