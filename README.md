@@ -46,10 +46,16 @@ The function exported by `lambundaler` behaves as follows:
       - `sourcemapOutput` (string) - An optional path to write the source map to.
       - `files` (array) - An optional array of strings and/or objects indicating additional files (such as standalone executables) to include in the zip archive. Strings specify file and directory paths. Objects should have `name` and `data` properties which are used as the file name and contents in the zip archive.
       - `output` (string) - Optional path to write the zip archive to.
+      - `deploy` (object) - Optional object used to deploy to AWS. The following properties are supported.
+        - `config` (object) - An optional configuration passed directly to [`Aws.Lambda()`](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Lambda.html#constructor-property) constructor.
+        - `name` (string) - The name to give the Lambda function.
+        - `role` (string) - An AWS role with permission to execute the Lambda.
+        - `runtime` (string) - The Lambda runtime to use. Valid values are `'nodejs'` and `'nodejs4.3'`. Defaults to `'nodejs4.3'`.
     - `callback` (function) - A function which is called upon completion. This function takes the following arguments.
       - `err` (error) - Represents any error that occurs.
       - `buffer` (`Buffer`) - Contains the zip archive, represented as a Node.js `Buffer`.
       - `artifacts` (object) - An object containing items generated during the build process. This object can contain the following properties.
         - `sourcemap` (string) - A source map generated during minification.
+        - `lambda` (object) - The Lambda function object created during deployment.
   - Returns
     - Nothing

@@ -2,6 +2,7 @@
 
 const Os = require('os');
 const Path = require('path');
+const AwsMock = require('aws-sdk-mock');
 const Code = require('code');
 const Fse = require('fs-extra');
 const Insync = require('insync');
@@ -156,6 +157,32 @@ describe('Lambundaler', () => {
       expect(buffer).to.be.an.instanceOf(Buffer);
       expect(buffer).to.equal(outputBuffer);
       expect(artifacts).to.equal({});
+      done();
+    });
+  });
+
+  it('deploys to AWS', (done) => {
+    AwsMock.mock('Lambda', 'createFunction', function (options, callback) {
+      callback(null, { foo: 'bar' });
+    });
+
+    L({
+      entry: Path.join(fixturesDirectory, 'single-file.js'),
+      export: 'handler',
+      deploy: {
+        config: {
+          accessKeyId: 'foo',
+          secretAccessKey: 'bar',
+          region: 'us-east-99'
+        },
+        name: 'foobar',
+        role: 'arn:aws:iam::12345:role/lambda_basic_execution'
+      }
+    }, (err, buffer, artifacts) => {
+      AwsMock.restore('Lambda', 'createFunction');
+      expect(err).to.not.exist();
+      expect(buffer).to.be.an.instanceOf(Buffer);
+      expect(artifacts).to.equal({ lambda: { foo: 'bar' } });
       done();
     });
   });
