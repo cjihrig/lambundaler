@@ -49,6 +49,7 @@ The function exported by `lambundaler` behaves as follows:
       - `deploy` (object) - Optional object used to deploy to AWS. The following properties are supported.
         - `config` (object) - An optional configuration passed directly to [`Aws.Lambda()`](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Lambda.html#constructor-property) constructor.
         - `name` (string) - The name to give the Lambda function.
+        - `overwrite` (boolean) - If `true`, `lambundaler` will attempt to delete the function specified by the `name` option. Defaults to `false`.
         - `role` (string) - An AWS role with permission to execute the Lambda.
         - `runtime` (string) - The Lambda runtime to use. Valid values are `'nodejs'` and `'nodejs4.3'`. Defaults to `'nodejs4.3'`.
     - `callback` (function) - A function which is called upon completion. This function takes the following arguments.

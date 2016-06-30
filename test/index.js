@@ -186,4 +186,40 @@ describe('Lambundaler', () => {
       done();
     });
   });
+
+  it('attempts to delete an existing lambda with overwrite', (done) => {
+    let called = false;
+
+    AwsMock.mock('Lambda', 'deleteFunction', function (options, callback) {
+      called = true;
+      callback();
+    });
+
+    AwsMock.mock('Lambda', 'createFunction', function (options, callback) {
+      callback(null, { foo: 'bar' });
+    });
+
+    L({
+      entry: Path.join(fixturesDirectory, 'single-file.js'),
+      export: 'handler',
+      deploy: {
+        config: {
+          accessKeyId: 'foo',
+          secretAccessKey: 'bar',
+          region: 'us-east-99'
+        },
+        name: 'foobar',
+        overwrite: true,
+        role: 'arn:aws:iam::12345:role/lambda_basic_execution'
+      }
+    }, (err, buffer, artifacts) => {
+      AwsMock.restore('Lambda', 'deleteFunction');
+      AwsMock.restore('Lambda', 'createFunction');
+      expect(err).to.not.exist();
+      expect(called).to.equal(true);
+      expect(buffer).to.be.an.instanceOf(Buffer);
+      expect(artifacts).to.equal({ lambda: { foo: 'bar' } });
+      done();
+    });
+  });
 });
