@@ -115,6 +115,24 @@ describe('Lambundaler', () => {
     });
   });
 
+  it('excludes modules from the bundle', (done) => {
+    L({
+      entry: Path.join(fixturesDirectory, 'excludes.js'),
+      export: 'handler',
+      exclude: ['aws-sdk']
+    }, (err, buffer, artifacts) => {
+      expect(err).to.not.exist();
+      expect(buffer).to.be.an.instanceOf(Buffer);
+      expect(artifacts).to.equal({});
+      unzip(buffer, (err, zip, buffer) => {
+        expect(err).to.not.exist();
+        expect(Object.keys(zip.files).length).to.equal(1);
+        expect(zip.files['excludes.js']._asBuffer.toString().indexOf('Amazon')).to.equal(-1);
+        done();
+      });
+    });
+  });
+
   it('creates a zipped bundle with additional files', (done) => {
     const file1 = Path.join(fixturesDirectory, 'file1.txt');
     const file2 = Path.join(fixturesDirectory, 'file2.txt');

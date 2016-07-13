@@ -44,6 +44,7 @@ The function exported by `lambundaler` behaves as follows:
       - `minify` (boolean) - If `true`, the bundle will be minified. Defaults to `false`.
       - `sourcemap` (string or boolean) - If minification is enabled, setting this to `false` prevents a source map from being generated. Setting this to a string allows you to name the source map. Defaults to `false`.
       - `sourcemapOutput` (string) - An optional path to write the source map to.
+      - `exclude` (array) - An optional array of strings representing modules to exclude from the bundle. This array is passed to Browserify. This option is essential when bundling code that uses the `'aws-sdk'` module. You can bundle `'aws-sdk'` via the `files` option, or rely on the version that is natively available on Lambda. 
       - `files` (array) - An optional array of strings and/or objects indicating additional files (such as standalone executables) to include in the zip archive. Strings specify file and directory paths. Objects should have `name` and `data` properties which are used as the file name and contents in the zip archive.
       - `output` (string) - Optional path to write the zip archive to.
       - `deploy` (object) - Optional object used to deploy to AWS. The following properties are supported.
