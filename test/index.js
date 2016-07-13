@@ -163,7 +163,7 @@ describe('Lambundaler', () => {
 
   it('deploys to AWS', (done) => {
     AwsMock.mock('Lambda', 'createFunction', function (options, callback) {
-      callback(null, { foo: 'bar' });
+      callback(null, { options });
     });
 
     L({
@@ -176,13 +176,26 @@ describe('Lambundaler', () => {
           region: 'us-east-99'
         },
         name: 'foobar',
-        role: 'arn:aws:iam::12345:role/lambda_basic_execution'
+        role: 'arn:aws:iam::12345:role/lambda_basic_execution',
+        memory: 256,
+        timeout: 100
       }
     }, (err, buffer, artifacts) => {
       AwsMock.restore('Lambda', 'createFunction');
       expect(err).to.not.exist();
       expect(buffer).to.be.an.instanceOf(Buffer);
-      expect(artifacts).to.equal({ lambda: { foo: 'bar' } });
+      expect(artifacts).to.include({
+        lambda: {
+          options: {
+            FunctionName: 'foobar',
+            Handler: 'single-file.handler',
+            MemorySize: 256,
+            Role: 'arn:aws:iam::12345:role/lambda_basic_execution',
+            Runtime: 'nodejs4.3',
+            Timeout: 100
+          }
+        }
+      });
       done();
     });
   });
