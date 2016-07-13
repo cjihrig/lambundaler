@@ -25,7 +25,7 @@
     "browserify": "13.0.1",
     "fs-extra": "0.30.0",
     "insync": "2.1.1",
-    "joi": "8.4.2",
+    "joi": "9.0.0",
     "lodash.merge": "4.4.0",
     "minifyify": "7.3.3",
     "zipit": "1.0.1"
