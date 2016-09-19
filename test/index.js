@@ -70,6 +70,29 @@ describe('Lambundaler', () => {
     });
   });
 
+  it('passes environment variables', (done) => {
+    const env = { foo: 'abc', bar: 999, baz: null };
+
+    L({
+      entry: Path.join(fixturesDirectory, 'env-vars.js'),
+      export: 'handler',
+      env
+    }, (err, buffer, artifacts) => {
+      expect(err).to.not.exist();
+      expect(buffer).to.be.an.instanceOf(Buffer);
+      expect(artifacts).to.equal({});
+      unzip(buffer, (err, zip, buffer) => {
+        expect(err).to.not.exist();
+
+        const file = zip.files['env-vars.js'];
+
+        expect(Object.keys(zip.files).length).to.equal(1);
+        expect(file._asBuffer.toString()).to.include(JSON.stringify(env));
+        done();
+      });
+    });
+  });
+
   it('minifies the bundle', (done) => {
     L({
       entry: Path.join(fixturesDirectory, 'single-file.js'),
