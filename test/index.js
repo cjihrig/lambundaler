@@ -1,5 +1,6 @@
 'use strict';
 
+const Cp = require('child_process');
 const Os = require('os');
 const Path = require('path');
 const AwsMock = require('aws-sdk-mock');
@@ -8,6 +9,7 @@ const Fse = require('fs-extra');
 const Insync = require('insync');
 const Lab = require('lab');
 const StandIn = require('stand-in');
+const WillCall = require('will-call');
 const Zip = require('jszip');
 const L = require('../lib');
 
@@ -176,6 +178,26 @@ describe('Lambundaler', () => {
         expect(zip.files['file2.txt']._asBuffer).to.equal(Fse.readFileSync(file2));
         done();
       });
+    });
+  });
+
+  it('runs npm install in a container', (done) => {
+    const wc = new WillCall();
+    StandIn.replace(Cp, 'exec', wc.expect((stand, cmd, callback) => {
+      expect(cmd).to.match(/^docker run -v/);
+      callback();
+    }), { stopAfter: 1 });
+
+    L({
+      entry: Path.join(fixturesDirectory, 'single-file.js'),
+      export: 'handler',
+      install: {
+        pkg: Path.resolve(__dirname, '..', 'package.json')
+      }
+    }, (err, buffer, artifacts) => {
+      expect(err).to.not.exist();
+      expect(wc.check()).to.equal([]);
+      done();
     });
   });
 

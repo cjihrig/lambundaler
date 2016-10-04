@@ -26,8 +26,10 @@
     "fs-extra": "0.30.0",
     "insync": "2.1.1",
     "joi": "9.0.4",
+    "lambstaller": "0.1.0",
     "lodash.merge": "4.6.0",
     "minifyify": "7.3.3",
+    "node-uuid": "1.4.7",
     "zipit": "1.0.1"
   },
   "devDependencies": {
@@ -36,7 +38,8 @@
     "code": "3.x.x",
     "jszip": "3.1.x",
     "lab": "11.x.x",
-    "stand-in": "4.x.x"
+    "stand-in": "4.x.x",
+    "will-call": "1.0.0"
   },
   "keywords": [
     "AWS",
