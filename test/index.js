@@ -247,17 +247,15 @@ describe('Lambundaler', () => {
       AwsMock.restore('Lambda', 'createFunction');
       expect(err).to.not.exist();
       expect(buffer).to.be.an.instanceOf(Buffer);
-      expect(artifacts).to.include({
-        lambda: {
-          options: {
-            FunctionName: 'foobar',
-            Handler: 'single-file.handler',
-            MemorySize: 256,
-            Role: 'arn:aws:iam::12345:role/lambda_basic_execution',
-            Runtime: 'nodejs4.3',
-            Timeout: 100
-          }
-        }
+      expect(artifacts.lambda).to.be.an.object();
+      expect(artifacts.lambda.options).to.be.an.object();
+      expect(artifacts.lambda.options).to.include({
+        FunctionName: 'foobar',
+        Handler: 'single-file.handler',
+        MemorySize: 256,
+        Role: 'arn:aws:iam::12345:role/lambda_basic_execution',
+        Runtime: 'nodejs4.3',
+        Timeout: 100
       });
       done();
     });
