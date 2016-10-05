@@ -195,7 +195,9 @@ describe('Lambundaler', () => {
         pkg: Path.resolve(__dirname, '..', 'package.json')
       }
     }, (err, buffer, artifacts) => {
-      expect(err).to.not.exist();
+      expect(err).to.exist();
+      expect(err.code).to.equal('ENOENT');
+      expect(err.path).to.match(/\/node_modules$/);
       expect(wc.check()).to.equal([]);
       done();
     });
