@@ -29,7 +29,7 @@
     "lambstaller": "0.1.0",
     "lodash.merge": "4.6.0",
     "minifyify": "7.3.3",
-    "uuid": "^3.0.0",
+    "uuid": "3.0.0",
     "zipit": "1.0.1"
   },
   "devDependencies": {
