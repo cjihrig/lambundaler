@@ -56,7 +56,7 @@ The function exported by `lambundaler` behaves as follows:
         - `name` (string) - The name to give the Lambda function.
         - `overwrite` (boolean) - If `true`, `lambundaler` will attempt to delete the function specified by the `name` option. Defaults to `false`.
         - `role` (string) - An AWS role with permission to execute the Lambda.
-        - `runtime` (string) - The Lambda runtime to use. Valid values are `'nodejs'` and `'nodejs4.3'`. Defaults to `'nodejs4.3'`.
+        - `runtime` (string) - The Lambda runtime to use. Valid values are `'nodejs'`, `'nodejs4.3'`, and `'nodejs6.10'`. Defaults to `'nodejs6.10'`.
         - `timeout` (number) - The execution timeout of the Lambda function in seconds. Defaults to three seconds.
         - `memory` (number) - The amount of memory, in MB, given to the Lambda function. Must be a multiple of 64MB. Defaults to 128MB.
     - `callback` (function) - A function which is called upon completion. This function takes the following arguments.

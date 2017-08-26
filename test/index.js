@@ -255,7 +255,7 @@ describe('Lambundaler', () => {
         Handler: 'single-file.handler',
         MemorySize: 256,
         Role: 'arn:aws:iam::12345:role/lambda_basic_execution',
-        Runtime: 'nodejs4.3',
+        Runtime: 'nodejs6.10',
         Timeout: 100
       });
       done();
