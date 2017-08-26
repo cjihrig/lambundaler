@@ -4,7 +4,6 @@ const Cp = require('child_process');
 const Os = require('os');
 const Path = require('path');
 const AwsMock = require('aws-sdk-mock');
-const Code = require('code');
 const Fse = require('fs-extra');
 const Insync = require('insync');
 const Lab = require('lab');
@@ -14,7 +13,7 @@ const Zip = require('jszip');
 const L = require('../lib');
 
 const lab = exports.lab = Lab.script();
-const expect = Code.expect;
+const expect = Lab.expect;
 const describe = lab.describe;
 const it = lab.it;
 
@@ -28,25 +27,25 @@ function unzip (buffer, callback) {
       compression: 'STORE',
       platform: process.platform
     })
-    .then((data) => {
-      Insync.each(Object.keys(zip.files), (key, next) => {
-        const file = zip.files[key];
+      .then((data) => {
+        Insync.each(Object.keys(zip.files), (key, next) => {
+          const file = zip.files[key];
 
-        if (file.dir) {
-          return next();
-        }
+          if (file.dir) {
+            return next();
+          }
 
-        file.async('nodebuffer')
-          .then((content) => {
-            file._asBuffer = content;
-            next();
-          })
-          .catch((err) => { next(err); });
-      }, (err) => {
-        callback(err, zip, data);
-      });
-    })
-    .catch((err) => { callback(err); });
+          file.async('nodebuffer')
+            .then((content) => {
+              file._asBuffer = content;
+              next();
+            })
+            .catch((err) => { next(err); });
+        }, (err) => {
+          callback(err, zip, data);
+        });
+      })
+      .catch((err) => { callback(err); });
   });
 }
 
