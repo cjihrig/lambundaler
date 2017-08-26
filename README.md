@@ -49,6 +49,7 @@ The function exported by `lambundaler` behaves as follows:
       - `install` (object) - Optional object used to run [`lambstaller`](https://github.com/continuationlabs/lambstaller). If this object is not included, the install will not be run. This object supports the following schema.
         - `pkg` (string) - The path to a `package.json` file. This file will be the target of `npm install --production`.
         - `out` (string) - The directory where the `package.json` file will be copied and the install will occur. The resulting `node_modules` directory will be automatically added to the bundle. This value is optional. If it is not included, a directory will be created in the system's temp directory.
+        - `version` (string) - The Node.js version to use. This is important for native addon compatibility. Valid values are `'nodejs'`, `'nodejs4.3'`, and `'nodejs6.10'`. Defaults to `'nodejs6.10'`.
       - `files` (array) - An optional array of strings and/or objects indicating additional files (such as standalone executables) to include in the zip archive. Strings specify file and directory paths. Objects should have `name` and `data` properties which are used as the file name and contents in the zip archive.
       - `output` (string) - Optional path to write the zip archive to.
       - `deploy` (object) - Optional object used to deploy to AWS. The following properties are supported.
