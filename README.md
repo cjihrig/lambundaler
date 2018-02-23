@@ -3,8 +3,8 @@
 [![Current Version](https://img.shields.io/npm/v/lambundaler.svg)](https://www.npmjs.org/package/lambundaler)
 [![Build Status via Travis CI](https://travis-ci.org/continuationlabs/lambundaler.svg?branch=master)](https://travis-ci.org/continuationlabs/lambundaler)
 ![Dependencies](http://img.shields.io/david/continuationlabs/lambundaler.svg)
+[![belly-button-style](https://img.shields.io/badge/eslint-bellybutton-4B32C3.svg)](https://github.com/continuationlabs/belly-button)
 
-[![belly-button-style](https://cdn.rawgit.com/continuationlabs/belly-button/master/badge.svg)](https://github.com/continuationlabs/belly-button)
 
 `lambundaler` is a bundler for AWS Lambda functions. The module exports a single function that Browserifies and zips code, making it suitable for deployment as a Lambda function. The zipped code can be optionally written to an output file.
 
