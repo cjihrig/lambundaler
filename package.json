@@ -21,19 +21,19 @@
     "node": ">=4.0.0"
   },
   "dependencies": {
-    "aws-sdk": "2.4.7",
-    "browserify": "14.4.0",
-    "fs-extra": "4.0.1",
+    "aws-sdk": "2.320.0",
+    "browserify": "16.2.2",
+    "fs-extra": "7.0.0",
     "insync": "2.1.1",
-    "joi": "10.6.0",
+    "joi": "13.6.0",
     "lambstaller": "0.2.0",
-    "lodash.merge": "4.6.0",
+    "lodash.merge": "4.6.1",
     "minifyify": "7.3.5",
-    "uuid": "3.1.0",
+    "uuid": "3.3.2",
     "zipit": "1.0.2"
   },
   "devDependencies": {
-    "aws-sdk-mock": "1.7.x",
+    "aws-sdk-mock": "4.1.x",
     "belly-button": "4.x.x",
     "jszip": "3.1.x",
     "lab": "14.x.x",
