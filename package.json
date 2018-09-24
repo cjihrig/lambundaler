@@ -2,15 +2,15 @@
   "name": "lambundaler",
   "version": "0.10.0",
   "description": "Bundler for AWS Lambda functions",
-  "author": "Continuation Labs <contact@continuation.io> (http://continuation.io/)",
+  "author": "Colin J. Ihrig <cjihrig@gmail.com> (http://www.cjihrig.com/)",
   "main": "lib/index.js",
-  "homepage": "https://github.com/continuationlabs/lambundaler",
+  "homepage": "https://github.com/cjihrig/lambundaler",
   "repository": {
     "type": "git",
-    "url": "https://github.com/continuationlabs/lambundaler"
+    "url": "https://github.com/cjihrig/lambundaler"
   },
   "bugs": {
-    "url": "https://github.com/continuationlabs/lambundaler/issues"
+    "url": "https://github.com/cjihrig/lambundaler/issues"
   },
   "license": "MIT",
   "scripts": {

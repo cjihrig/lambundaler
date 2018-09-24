@@ -1,9 +1,9 @@
 # lambundaler
 
 [![Current Version](https://img.shields.io/npm/v/lambundaler.svg)](https://www.npmjs.org/package/lambundaler)
-[![Build Status via Travis CI](https://travis-ci.org/continuationlabs/lambundaler.svg?branch=master)](https://travis-ci.org/continuationlabs/lambundaler)
-![Dependencies](http://img.shields.io/david/continuationlabs/lambundaler.svg)
-[![belly-button-style](https://img.shields.io/badge/eslint-bellybutton-4B32C3.svg)](https://github.com/continuationlabs/belly-button)
+[![Build Status via Travis CI](https://travis-ci.org/cjihrig/lambundaler.svg?branch=master)](https://travis-ci.org/cjihrig/lambundaler)
+![Dependencies](http://img.shields.io/david/cjihrig/lambundaler.svg)
+[![belly-button-style](https://img.shields.io/badge/eslint-bellybutton-4B32C3.svg)](https://github.com/cjihrig/belly-button)
 
 
 `lambundaler` is a bundler for AWS Lambda functions. The module exports a single function that Browserifies and zips code, making it suitable for deployment as a Lambda function. The zipped code can be optionally written to an output file.
@@ -46,7 +46,7 @@ The function exported by `lambundaler` behaves as follows:
       - `sourcemap` (string or boolean) - If minification is enabled, setting this to `false` prevents a source map from being generated. Setting this to a string allows you to name the source map. Defaults to `false`.
       - `sourcemapOutput` (string) - An optional path to write the source map to.
       - `exclude` (array) - An optional array of strings representing modules to exclude from the bundle. This array is passed to Browserify. This option is essential when bundling code that uses the `'aws-sdk'` module. You can bundle `'aws-sdk'` via the `files` option, or rely on the version that is natively available on Lambda.
-      - `install` (object) - Optional object used to run [`lambstaller`](https://github.com/continuationlabs/lambstaller). If this object is not included, the install will not be run. This object supports the following schema.
+      - `install` (object) - Optional object used to run [`lambstaller`](https://github.com/cjihrig/lambstaller). If this object is not included, the install will not be run. This object supports the following schema.
         - `pkg` (string) - The path to a `package.json` file. This file will be the target of `npm install --production`.
         - `out` (string) - The directory where the `package.json` file will be copied and the install will occur. The resulting `node_modules` directory will be automatically added to the bundle. This value is optional. If it is not included, a directory will be created in the system's temp directory.
         - `version` (string) - The Node.js version to use. This is important for native addon compatibility. Valid values are `'nodejs'`, `'nodejs4.3'`, and `'nodejs6.10'`. Defaults to `'nodejs6.10'`.
