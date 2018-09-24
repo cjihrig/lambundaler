@@ -4,6 +4,8 @@ const Cp = require('child_process');
 const Os = require('os');
 const Path = require('path');
 const AwsMock = require('aws-sdk-mock');
+const Barrier = require('cb-barrier');
+const Code = require('code');
 const Fse = require('fs-extra');
 const Insync = require('insync');
 const Lab = require('lab');
@@ -13,9 +15,8 @@ const Zip = require('jszip');
 const L = require('../lib');
 
 const lab = exports.lab = Lab.script();
-const expect = Lab.expect;
-const describe = lab.describe;
-const it = lab.it;
+const { describe, it } = lab;
+const { expect } = Code;
 
 const fixturesDirectory = Path.join(__dirname, 'fixtures');
 
@@ -51,7 +52,9 @@ function unzip (buffer, callback) {
 
 
 describe('Lambundaler', () => {
-  it('creates a zipped bundle', (done) => {
+  it('creates a zipped bundle', () => {
+    const barrier = new Barrier();
+
     L({
       entry: Path.join(fixturesDirectory, 'single-file.js'),
       export: 'handler'
@@ -66,12 +69,15 @@ describe('Lambundaler', () => {
 
         expect(Object.keys(zip.files).length).to.equal(1);
         expect(file._asBuffer.toString()).to.match(/\/\/ Single file handler/);
-        done();
+        barrier.pass();
       });
     });
+
+    return barrier;
   });
 
-  it('passes environment variables', (done) => {
+  it('passes environment variables', () => {
+    const barrier = new Barrier();
     const env = { foo: 'abc', bar: 999, baz: null };
 
     L({
@@ -89,12 +95,16 @@ describe('Lambundaler', () => {
 
         expect(Object.keys(zip.files).length).to.equal(1);
         expect(file._asBuffer.toString()).to.include(JSON.stringify(env));
-        done();
+        barrier.pass();
       });
     });
+
+    return barrier;
   });
 
-  it('minifies the bundle', (done) => {
+  it('minifies the bundle', () => {
+    const barrier = new Barrier();
+
     L({
       entry: Path.join(fixturesDirectory, 'single-file.js'),
       export: 'handler',
@@ -110,12 +120,16 @@ describe('Lambundaler', () => {
 
         expect(Object.keys(zip.files).length).to.equal(1);
         expect(file._asBuffer.toString()).to.not.match(/\/\/ Single file handler/);
-        done();
+        barrier.pass();
       });
     });
+
+    return barrier;
   });
 
-  it('generates a source map for a minified bundle', (done) => {
+  it('generates a source map for a minified bundle', () => {
+    const barrier = new Barrier();
+
     L({
       entry: Path.join(fixturesDirectory, 'single-file.js'),
       export: 'handler',
@@ -134,12 +148,16 @@ describe('Lambundaler', () => {
 
         expect(Object.keys(zip.files).length).to.equal(1);
         expect(file._asBuffer.toString()).to.not.match(/\/\/ Single file handler/);
-        done();
+        barrier.pass();
       });
     });
+
+    return barrier;
   });
 
-  it('excludes modules from the bundle', (done) => {
+  it('excludes modules from the bundle', () => {
+    const barrier = new Barrier();
+
     L({
       entry: Path.join(fixturesDirectory, 'excludes.js'),
       export: 'handler',
@@ -152,12 +170,15 @@ describe('Lambundaler', () => {
         expect(err).to.not.exist();
         expect(Object.keys(zip.files).length).to.equal(1);
         expect(zip.files['excludes.js']._asBuffer.toString().indexOf('Amazon')).to.equal(-1);
-        done();
+        barrier.pass();
       });
     });
+
+    return barrier;
   });
 
-  it('creates a zipped bundle with additional files', (done) => {
+  it('creates a zipped bundle with additional files', () => {
+    const barrier = new Barrier();
     const file1 = Path.join(fixturesDirectory, 'file1.txt');
     const file2 = Path.join(fixturesDirectory, 'file2.txt');
 
@@ -175,12 +196,15 @@ describe('Lambundaler', () => {
         expect(zip.files['single-file.js']._asBuffer.toString()).to.match(/\/\/ Single file handler/);
         expect(zip.files['file1.txt']._asBuffer).to.equal(Fse.readFileSync(file1));
         expect(zip.files['file2.txt']._asBuffer).to.equal(Fse.readFileSync(file2));
-        done();
+        barrier.pass();
       });
     });
+
+    return barrier;
   });
 
-  it('runs npm install in a container', (done) => {
+  it('runs npm install in a container', () => {
+    const barrier = new Barrier();
     const wc = new WillCall();
     StandIn.replace(Cp, 'exec', wc.expect((stand, cmd, callback) => {
       expect(cmd).to.match(/^docker run -v/);
@@ -198,11 +222,14 @@ describe('Lambundaler', () => {
       expect(err.code).to.equal('ENOENT');
       expect(err.path).to.match(/\/node_modules$/);
       expect(wc.check()).to.equal([]);
-      done();
+      barrier.pass();
     });
+
+    return barrier;
   });
 
-  it('supports writing an output file', (done) => {
+  it('supports writing an output file', () => {
+    const barrier = new Barrier();
     const outputPath = Path.join(Os.tmpdir(), 'out.zip');
     let outputBuffer;
 
@@ -221,11 +248,15 @@ describe('Lambundaler', () => {
       expect(buffer).to.be.an.instanceOf(Buffer);
       expect(buffer).to.equal(outputBuffer);
       expect(artifacts).to.equal({});
-      done();
+      barrier.pass();
     });
+
+    return barrier;
   });
 
-  it('deploys to AWS', (done) => {
+  it('deploys to AWS', () => {
+    const barrier = new Barrier();
+
     AwsMock.mock('Lambda', 'createFunction', function (options, callback) {
       callback(null, { options });
     });
@@ -258,11 +289,14 @@ describe('Lambundaler', () => {
         Runtime: 'nodejs6.10',
         Timeout: 100
       });
-      done();
+      barrier.pass();
     });
+
+    return barrier;
   });
 
-  it('attempts to delete an existing lambda with overwrite', (done) => {
+  it('attempts to delete an existing lambda with overwrite', () => {
+    const barrier = new Barrier();
     let called = false;
 
     AwsMock.mock('Lambda', 'deleteFunction', function (options, callback) {
@@ -294,7 +328,9 @@ describe('Lambundaler', () => {
       expect(called).to.equal(true);
       expect(buffer).to.be.an.instanceOf(Buffer);
       expect(artifacts).to.equal({ lambda: { foo: 'bar' } });
-      done();
+      barrier.pass();
     });
+
+    return barrier;
   });
 });

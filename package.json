@@ -35,8 +35,10 @@
   "devDependencies": {
     "aws-sdk-mock": "4.1.x",
     "belly-button": "4.x.x",
+    "cb-barrier": "1.x.x",
+    "code": "5.x.x",
     "jszip": "3.1.x",
-    "lab": "14.x.x",
+    "lab": "16.x.x",
     "stand-in": "4.x.x",
     "will-call": "1.x.x"
   },
